@@ -8,9 +8,10 @@ def load_model():
     return pickle.load(open('LR_80.pkl', 'rb'))
 
 
-def app():
+pipe = load_model()
 
-    pipe = load_model()
+
+def app():
 
     teams = [
         'Royal Challengers Bengaluru', 'Mumbai Indians', 'Chennai Super Kings',
@@ -33,54 +34,61 @@ def app():
         unsafe_allow_html=True
     )
 
-    col1, col2 = st.columns(2)
+    with st.form("win_form"):
 
-    with col1:
-        batting_team = st.selectbox(
-            'Select the batting team',
-            sorted(teams)
+        col1, col2 = st.columns(2)
+
+        with col1:
+            batting_team = st.selectbox(
+                'Select batting team',
+                sorted(teams)
+            )
+
+        with col2:
+            bowling_team = st.selectbox(
+                'Select bowling team',
+                sorted(teams)
+            )
+
+        selected_city = st.selectbox(
+            'Select host city',
+            sorted(cities)
         )
 
-    with col2:
-        bowling_team = st.selectbox(
-            'Select the bowling team',
-            sorted(teams)
+        target = st.number_input(
+            'Target',
+            min_value=1,
+            step=1
         )
 
-    selected_city = st.selectbox(
-        'Select host city',
-        sorted(cities)
-    )
+        col3, col4, col5 = st.columns(3)
 
-    target = st.number_input(
-        'Target',
-        min_value=1
-    )
+        with col3:
+            score = st.number_input(
+                'Score',
+                min_value=0,
+                step=1
+            )
 
-    col3, col4, col5 = st.columns(3)
+        with col4:
+            overs = st.number_input(
+                'Overs completed',
+                min_value=0.1,
+                max_value=20.0,
+                step=0.1
+            )
 
-    with col3:
-        score = st.number_input(
-            'Score',
-            min_value=0
-        )
+        with col5:
+            wickets = st.number_input(
+                'Wickets out',
+                min_value=0,
+                max_value=10,
+                step=1
+            )
 
-    with col4:
-        overs = st.number_input(
-            'Overs completed',
-            min_value=0.1,
-            max_value=20.0,
-            step=0.1
-        )
+        submit = st.form_submit_button("Predict Probability")
 
-    with col5:
-        wickets = st.number_input(
-            'Wickets out',
-            min_value=0,
-            max_value=10
-        )
-
-    if st.button('Predict Probability'):
+    if submit:
 
         if batting_team == bowling_team:
             st.error("Batting and Bowling team cannot be same.")
