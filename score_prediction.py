@@ -48,7 +48,13 @@ def app():
     if st.button('Predict Score'):
         balls_left = 120 - (overs * 6)
         wickets_left = 10 - wickets
-        crr = current_score / overs
+        
+        if overs == 0:
+            crr = 0
+        else:
+            crr = current_score / overs
+        
+    
     
         input_df = pd.DataFrame({
             'batting_team': [batting_team],
