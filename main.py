@@ -1,109 +1,83 @@
 import streamlit as st
+
+# Streamlit page config MUST be first
+st.set_page_config(page_title="CriCast")
+
 from streamlit_option_menu import option_menu
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Import your app modules
-import  win_prediction, about, score_prediction, match,score
+import win_prediction
+import about
+import score_prediction
+import match
+import score
 
-# Streamlit page config
-st.set_page_config(page_title="CriCast")
 
-# Optional: Google Analytics (skip if not needed)
-st.markdown(
-    f"""
-    <script async src="https://www.googletagmanager.com/gtag/js?id={os.getenv('analytics_tag')}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){{dataLayer.push(arguments);}}
-        gtag('js', new Date());
-        gtag('config', '{os.getenv('analytics_tag')}');
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
-# Class for MultiApp Structure
 class MultiApp:
-    def __init__(self):
-        self.apps = []
 
-    def add_app(self, title, func):
-        self.apps.append({"title": title, "function": func})
-
+    @staticmethod
     def run():
+
         with st.sidebar:
             app = option_menu(
                 menu_title='CriCast',
                 options=[
-                    'Score Prediction', 
-                    'Win Prediction', 
-                    'UpComing Matches', 
+                    'Score Prediction',
+                    'Win Prediction',
+                    'UpComing Matches',
                     'Live Score',
                     'About'
                 ],
                 icons=[
-                   
-                    'graph-up-arrow',           # Score Prediction
-                    'award-fill',               # Win Prediction
-                    'calendar-event-fill',      # Upcoming Matches
+                    'graph-up-arrow',
+                    'award-fill',
+                    'calendar-event-fill',
                     'tv',
-                    'info-circle-fill'          # About
+                    'info-circle-fill'
                 ],
                 menu_icon='trophy-fill',
                 default_index=0,
                 styles={
-                    "container": {"padding": "5!important", "background-color": 'black'},
-                    "icon": {"color": "white", "font-size": "23px"},
+                    "container": {
+                        "padding": "5!important",
+                        "background-color": 'black'
+                    },
+                    "icon": {
+                        "color": "white",
+                        "font-size": "23px"
+                    },
                     "nav-link": {
-                        "color": "white", 
-                        "font-size": "20px", 
-                        "text-align": "left", 
-                        "margin": "0px", 
+                        "color": "white",
+                        "font-size": "20px",
+                        "text-align": "left",
+                        "margin": "0px",
                         "--hover-color": "red"
                     },
-                    "nav-link-selected": {"background-color": "#02ab21"},
+                    "nav-link-selected": {
+                        "background-color": "#02ab21"
+                    },
                 }
             )
 
-        # Route to the selected app page
-        
-
         if app == "Score Prediction":
-      #      if st.session_state.get("signedout"):
             score_prediction.app()
-      #      else:
-      #          st.warning("⚠️ Please SignUp first to access Score Prediction.")
-      #          st.stop()
 
         elif app == "Win Prediction":
-       #     if st.session_state.get("signedout"):
             win_prediction.app()
-       #     else:
-        #        st.warning("⚠️ Please SignUp first to access Win Prediction.")
-       #         st.stop()
 
-            
         elif app == "UpComing Matches":
-     #       if st.session_state.get("signedout"):
             match.app()
-     #       else:
-     #           st.warning("⚠️ Please SignUp first to access UpComing Matches.")
-     #           if st.button("👤 SignUP"):
-     #               home.app()
-     #           st.stop()    
 
         elif app == "Live Score":
-      #      if st.session_state.get("signedout"):
             score.app()
-      #      else:
-       #         st.warning("⚠️ Please SignUp first to access your Live Score.")
-       #         st.stop()
 
-       
-#
         elif app == "About":
             about.app()
 
-    run()
+
+if __name__ == "__main__":
+    MultiApp.run()
