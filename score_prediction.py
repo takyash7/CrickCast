@@ -8,9 +8,10 @@ def load_model():
     return pickle.load(open('pipe.pkl', 'rb'))
 
 
-def app():
+pipe = load_model()
 
-    pipe = load_model()
+
+def app():
 
     teams = [
         'Royal Challengers Bengaluru', 'Mumbai Indians', 'Chennai Super Kings',
@@ -33,61 +34,64 @@ def app():
         unsafe_allow_html=True
     )
 
-    col1, col2 = st.columns(2)
+    with st.form("score_form"):
 
-    with col1:
-        batting_team = st.selectbox(
-            'Select batting team',
-            sorted(teams)
+        col1, col2 = st.columns(2)
+
+        with col1:
+            batting_team = st.selectbox(
+                'Select batting team',
+                sorted(teams)
+            )
+
+        with col2:
+            bowling_team = st.selectbox(
+                'Select bowling team',
+                sorted(teams)
+            )
+
+        city = st.selectbox(
+            'Select city',
+            sorted(cities)
         )
 
-    with col2:
-        bowling_team = st.selectbox(
-            'Select bowling team',
-            sorted(teams)
-        )
+        col3, col4, col5 = st.columns(3)
 
-    city = st.selectbox(
-        'Select city',
-        sorted(cities)
-    )
+        with col3:
+            current_score = st.number_input(
+                'Current Score',
+                min_value=0,
+                step=1
+            )
 
-    col3, col4, col5 = st.columns(3)
+        with col4:
+            overs = st.number_input(
+                'Overs done',
+                min_value=0.1,
+                max_value=20.0,
+                step=0.1
+            )
 
-    with col3:
-        current_score = st.number_input(
-            'Current Score',
-            min_value=0
-        )
+        with col5:
+            wickets = st.number_input(
+                'Wickets out',
+                min_value=0,
+                max_value=10,
+                step=1
+            )
 
-    with col4:
-        overs = st.number_input(
-            'Overs done (works for over > 5)',
-            min_value=0.1,
-            max_value=20.0,
-            step=0.1
-        )
-
-    with col5:
-        wickets = st.number_input(
-            'Wickets out',
+        last_five = st.number_input(
+            'Runs scored in last 5 overs',
             min_value=0,
-            max_value=10
+            step=1
         )
 
-    last_five = st.number_input(
-        'Runs scored in last 5 overs',
-        min_value=0
-    )
+        submit = st.form_submit_button("Predict Score")
 
-    if st.button('Predict Score'):
+    if submit:
 
         if batting_team == bowling_team:
             st.error("Batting and Bowling team cannot be same.")
-            return
-
-        if overs <= 0:
-            st.error("Overs must be greater than 0.")
             return
 
         balls_left = 120 - (overs * 6)
@@ -107,6 +111,4 @@ def app():
 
         result = pipe.predict(input_df)
 
-        st.success(
-            f"Predicted Score: {int(result[0])} 🏏"
-        )
+        st.success(f"Predicted Score: {int(result[0])} 🏏")
