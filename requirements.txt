@@ -5,5 +5,5 @@ pandas
 numpy
 xgboost
 python-dotenv
-scikit-learn
 pickle-mixin
+scikit-learn==1.2.2
