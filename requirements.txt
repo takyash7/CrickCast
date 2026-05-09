@@ -5,3 +5,5 @@ pandas
 numpy
 xgboost
 python-dotenv
+scikit-learn
+pickle-mixin
