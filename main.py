@@ -72,14 +72,14 @@ class MultiApp:
 
         if app == "Score Prediction":
       #      if st.session_state.get("signedout"):
-                score_prediction.app()
+            score_prediction.app()
       #      else:
       #          st.warning("⚠️ Please SignUp first to access Score Prediction.")
       #          st.stop()
 
         elif app == "Win Prediction":
        #     if st.session_state.get("signedout"):
-                win_prediction.app()
+            win_prediction.app()
        #     else:
         #        st.warning("⚠️ Please SignUp first to access Win Prediction.")
        #         st.stop()
@@ -87,7 +87,7 @@ class MultiApp:
             
         elif app == "UpComing Matches":
      #       if st.session_state.get("signedout"):
-                match.app()
+            match.app()
      #       else:
      #           st.warning("⚠️ Please SignUp first to access UpComing Matches.")
      #           if st.button("👤 SignUP"):
@@ -96,7 +96,7 @@ class MultiApp:
 
         elif app == "Live Score":
       #      if st.session_state.get("signedout"):
-               score.app()
+            score.app()
       #      else:
        #         st.warning("⚠️ Please SignUp first to access your Live Score.")
        #         st.stop()
@@ -104,6 +104,6 @@ class MultiApp:
        
 #
         elif app == "About":
-            about.app()
+        about.app()
 
     run()
